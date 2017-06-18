@@ -6,6 +6,15 @@ import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Session;
 import com.datastax.driver.core.utils.UUIDs;
 
+/*
+Equivalent CQL statement: 
+BEGIN BATCH
+INSERT INTO user (id, name) VALUES(now(), 'user-1');
+INSERT INTO user (id, name) VALUES(now(), 'user-2');
+INSERT INTO user (id, name) VALUES(now(), 'user-3');
+APPLY BATCH;
+*/
+
 public class BatchStatementExample {
 	public static void main(String[] args) {
 
