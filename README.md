@@ -19,7 +19,7 @@ Aspect to look after in the Cassandra client application
 
 
 Data Type Matching Between CQL Type and Java Type
-
+```
 CQL              Java
 ===              ====
 boolean          java.lang.Boolean
@@ -41,5 +41,5 @@ set<E>           java.util.Set<E>       where E is also a type from this list
 map<K,V>         java.util.Map<K,V>     where K and V is also a types from this list
 (user type)      com.datastax.driver.core.UDTValue
 (tuple type)     com.datastax.driver.core.TupleValue
-
+```
 
