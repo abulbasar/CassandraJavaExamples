@@ -2,6 +2,7 @@ package com.example;
 
 import java.util.UUID;
 
+import com.datastax.driver.core.ConsistencyLevel;
 import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
@@ -14,9 +15,12 @@ public class SimpleStatementExample {
 		Session session = Connection.connect();
 				
 		SimpleStatement statement1 = new SimpleStatement("insert into user (id, name, age) values (?, ?, ?)",
-				UUIDs.timeBased(), "Abul", 34);
+				UUIDs.timeBased(), "user01", 30);
+		
+		statement1.setConsistencyLevel(ConsistencyLevel.ONE);
 
 		try {
+			
 			ResultSet rs = session.execute(statement1);
 			System.out.println(rs);
 		} catch (Exception ex) {
