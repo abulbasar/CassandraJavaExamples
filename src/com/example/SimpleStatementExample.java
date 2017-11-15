@@ -34,7 +34,8 @@ public class SimpleStatementExample {
 		System.out.println(rs2);
 
 		for (Row row : rs2) {
-			System.out.printf("id: %s, name: %s, age: %d\n", row.get(0, UUID.class), row.getString(1), row.getInt(2));
+			System.out.printf("id: %s, name: %s, age: %d\n", row.get(0, UUID.class), 
+					  row.getString(1), row.getInt(2));
 		}
 
 		Connection.close();
