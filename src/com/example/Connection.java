@@ -30,6 +30,9 @@ final public class Connection {
 		}
 		return session;
 	}
+	private Connection(){
+
+    }
 	
 	static void close() {
 		cluster.close();
