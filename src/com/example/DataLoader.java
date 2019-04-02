@@ -23,19 +23,14 @@ public class DataLoader {
 		CsvParser parser = new CsvParser(settings);
 		InputStream inputStream = new FileInputStream(path);
 		
-		InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+		InputStreamReader inputStreamReader =
+                new InputStreamReader(inputStream, "UTF-8");
 		List<String[]> allRows = parser.parseAll(inputStreamReader);
 
 		return allRows;
 		
 	}
-	
-	/*
 
-	create table stocks(date date, open double,high double,low double,close double,volume double,
-	 adjclose double,symbol text, primary key((symbol), date)) with clustering order by (date DESC);
-
-	 */
 	
 	public static void main(String[] args) throws Exception {
 
@@ -44,9 +39,27 @@ public class DataLoader {
 		Cluster cluster = Cluster
 				.builder()
 				.addContactPoint("localhost")
+                .withPort(9042)
+                .withCredentials("cassandra", "cassandra")
 				.build();
+
 		Session session = cluster.connect();
-		String sql = "insert into demo.stocks (date, open, high, low, close, volume, adjclose, symbol) values (?, ?, ?, ?, ?, ?, ?, ?)";
+
+		session.execute("create table if not exists stocks(" +
+                "date date, " +
+                "open double," +
+                "high double," +
+                "low double," +
+                "close double," +
+                "volume double," +
+                "adjclose double," +
+                "symbol text, " +
+                "primary key((symbol), date)" +
+                ") with  clustering order by (date DESC)");
+
+		String sql = "insert into demo.stocks (date, open, high, low, close, " +
+                "volume, adjclose, symbol) values (?, ?, ?, ?, ?, ?, ?, ?)";
+
         PreparedStatement loadStatement = session.prepare(sql);
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		List<String[]> rows = readData(inputFile);
@@ -65,7 +78,8 @@ public class DataLoader {
 				Double adjclose = Double.valueOf(tokens[6]); 
 				String symbol = tokens[7];
 				
-				ResultSet resultSet = session.execute(loadStatement.bind(localDate, open, high, low, close, volume, adjclose, symbol));
+				ResultSet resultSet = session.execute(loadStatement
+                        .bind(localDate, open, high, low, close, volume, adjclose, symbol));
                 results.add(resultSet.wasApplied());
 			}
 		}
