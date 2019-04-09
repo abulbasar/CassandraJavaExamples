@@ -34,9 +34,9 @@ public class DataLoader {
 	private static void println(Object... attrs){
 	    for(Object obj: attrs){
 	       System.out.print(obj);
-        }
+            }
 	    System.out.println("");
-    }
+        }
 
 	
 	public static void main(String[] args) throws Exception {
@@ -44,7 +44,7 @@ public class DataLoader {
 	    if(args.length==0){
 	        println("Provide path of the input file for stocks data");
 	        System.exit(-1);
-        }
+            }
 	    String inputFile = args[0];
 
 		Cluster cluster = Cluster
@@ -54,7 +54,7 @@ public class DataLoader {
                 .withCredentials("cassandra", "cassandra")
 				.build();
 
-		Session session = cluster.connect();
+		Session session = cluster.connect("demo");
 
 		session.execute("create table if not exists stocks(" +
                 "date date, " +
